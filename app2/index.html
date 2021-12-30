@@ -40,19 +40,22 @@
 list();
 function list(){
   $.get("api/list.php",(list)=>{
-    // console.log(list);
-    let classlist=JSON.parse(list);
-    let card;
-    classlist.forEach((c,i)=>{
-      let card=`<div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">${c.班級}</h5>
-                    <p class="card-text">${c.人數}</p>
-                  </div>
-                </div>`;
-      $("#classlist").append(card);
-      
-    });
+    console.log(list);
+      let classlist=JSON.parse(list);
+      let card;
+      classlist.forEach((c,i)=>{
+          let card=`<div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">${c.班級}</h5>
+                            <p class="card-text">${c.人數}</p>
+                          </div>
+                        </div>`;
+              $("#classlist").append(card);
+          
+            });
+
+      // 在後台整理好資料再輸出到頁面
+      // $("#classlist").html(list);
   })
 }
 
