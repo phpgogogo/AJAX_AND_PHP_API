@@ -122,6 +122,10 @@ function showData(array){
         <td>${stu.name}</td>
         <td>${stu.birthday}</td>
         <td>${stu.national_id}</td>
+        <td>
+          <button class='btn btn-primary' onclick='update(${stu.id})'>編輯</button>
+          <button class='btn btn-danger' onclick='del(${stu.id})'>刪除</button>
+        </td>
         </tr>`;
         $("#students").append(tr);
     })
@@ -137,7 +141,8 @@ function create(){
 //查詢資料的函式
 function query(){
   console.log($("#query").val());
-  $.get("api/query.php",{"q":$("#query").val()},(items)=>{
+  let q=$("#query").val();
+  $.get("api/query.php",{q},(items)=>{
     // console.log(items);
     showData(items);
   });
@@ -149,8 +154,10 @@ function update(){
 }
 
 //刪除資料的函式
-function del(){
-
+function del(id){
+  $.post("api/delete.php",{id},(classnum)=>{
+    loadStudents(classnum);
+  });
 }
 
 </script>
