@@ -96,8 +96,26 @@ function loadStudents(classnum){
     console.log(stulist);
     // stulist.forEach((stu,idx)=>{})
     // stulist.forEach(function(stu,idx){})
-    let tr="";
-    stulist.forEach((stu,idx)=>{
+    showData(stulist);
+    $("#classlist").hide();
+    showNav();
+  });
+}
+
+// table顯示學生專用函式
+function showData(array){
+  $("#students").html("");
+  // console.log(array);
+  let data;
+  if(typeof array == "object"){
+    data=array;
+  }else{
+    data=JSON.parse(array);
+
+  }
+
+  let tr="";
+  data.forEach((stu,idx)=>{
       tr=`<tr>
         <td>${stu.uni_id}</td>
         <td>${stu.seat_num}</td>
@@ -107,10 +125,10 @@ function loadStudents(classnum){
         </tr>`;
         $("#students").append(tr);
     })
-    $("#classlist").hide();
-    showNav();
-  });
 }
+
+
+
 //新增資料的函式
 function create(){
 
@@ -118,7 +136,11 @@ function create(){
 
 //查詢資料的函式
 function query(){
-
+  console.log($("#query").val());
+  $.get("api/query.php",{"q":$("#query").val()},(items)=>{
+    // console.log(items);
+    showData(items);
+  });
 }
 
 //編輯資料的函式
