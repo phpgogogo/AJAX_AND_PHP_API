@@ -15,9 +15,10 @@
 <body>
   <h1 class="header">學生資料管理系統</h1>
   <div class="container">
-    <div class="card-columns" id="classlist">
+    <div class="card-columns" id="classlist"></div>
+    <table id="students" class="table">
 
-    </div>
+    </table>
     
 
   </div>
@@ -44,7 +45,8 @@ function list(){
       let classlist=JSON.parse(list);
       let card;
       classlist.forEach((c,i)=>{
-          let card=`<div class="card">
+          let card=`<a href="#" onclick="loadStudents('${c.班級}')">
+                    <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">${c.班級}</h5>
                             <p class="card-text">${c.人數}</p>
@@ -58,7 +60,26 @@ function list(){
       // $("#classlist").html(list);
   })
 }
-
+// 載入班級學員列表
+function loadStudents(classnum){
+  $("#students").html("");
+  $.getJSON("api/load_student.php",{'classroom':classnum},(stulist)=>{
+    console.log(stulist);
+    // stulist.forEach((stu,idx)=>{})
+    // stulist.forEach(function(stu,idx){})
+    let tr="";
+    stulist.forEach((stu,idx)=>{
+      tr=`<tr>
+        <td>${stu.uni_id}</td>
+        <td>${stu.seat_num}</td>
+        <td>${stu.name}</td>
+        <td>${stu.birthday}</td>
+        <td>${stu.national_id}</td>
+        </tr>`;
+        $("#students").append(tr);
+    })
+  });
+}
 //新增資料的函式
 function create(){
 
