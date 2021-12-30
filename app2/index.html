@@ -13,9 +13,10 @@
 
 </head>
 <body>
-  <h1 class="header">學生資料管理系統</h1>
+  <h1 class="header"><a href="#" onclick="home()">學生資料管理系統</a></h1>
   <div class="container">
     <div class="card-columns" id="classlist"></div>
+    <nav id="nav" class="d-flex justify-content-between"></nav>
     <table id="students" class="table">
 
     </table>
@@ -38,6 +39,14 @@
 * 4.是否會有回傳值？回傳值的功用及處理？
 * 5.是否需要更新畫面內容？更新畫面的方法？
 ************************************/
+
+function home(){
+  $("#classlist").show();
+  $("#nav").hide();
+  $("#nav").removeClass("d-flex");
+  $("#students").html("");
+}
+
 list();
 function list(){
   $.get("api/list.php",(list)=>{
@@ -60,6 +69,26 @@ function list(){
       // $("#classlist").html(list);
   })
 }
+
+function showNav(){
+  $("#nav").html("");
+  $("#nav").addClass("d-flex");
+  $.get("api/list.php",(list)=>{
+      let classlist=JSON.parse(list);
+      let btn;
+      classlist.forEach((c,i)=>{
+          let btn=`<a href="#" class='mx-2 bordered rounded' onclick="loadStudents('${c.班級}')">
+                    ${c.班級}
+                    </a>`;
+              $("#nav").append(btn);
+            });
+      $("#nav").prepend(`<input type='text' name='query' id='query' placeholder='輸入學生姓名'>
+      <button onclick="query()">查詢</button>`);
+  })
+}
+
+
+
 // 載入班級學員列表
 function loadStudents(classnum){
   $("#students").html("");
@@ -78,6 +107,8 @@ function loadStudents(classnum){
         </tr>`;
         $("#students").append(tr);
     })
+    $("#classlist").hide();
+    showNav();
   });
 }
 //新增資料的函式
